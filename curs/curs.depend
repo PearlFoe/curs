@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1620814452 source:d:\cpp\university\s2\curs\utils.cpp
+
+1620814426 source:d:\cpp\university\s2\curs\main.cpp
+	<iostream>
+
