@@ -32,12 +32,12 @@ public:
 
 class Invoker{
 private:
-    CharacterCommand * characters;
+    int characters_counter = 0;//если использовать вектор, то этот параметр не нужен
+    CharacterCommand * characters;//использовать вектор
 private:
-    void tellStory(string command);
-    void addCharacter(CharacterCommand character);
-    void removeCharacter(CharacterCommand character);
-    void setcommand(CharacterCommand command);//???????????????????????????????????
+    void tellStory(string *command);
+    void addCharacter(CharacterCommand *character);
+    void removeCharacter(CharacterCommand *character);
 };
 
 class Character : public Receiver{
@@ -49,7 +49,7 @@ class GrandMother: public Character{
 private:
     GrandFather *grandFather;
 public:
-    GrandMother();
+    GrandMother(GrandFather gf): grandFather(gf){}
 
 	void About() override;
 	void analyzeCommand(string command)override;
@@ -61,7 +61,7 @@ class GrandFather: public Character{
 private:
     GrandMother *grandMother;
 public:
-    GrandFather();
+    GrandFather(GrandMother gm): grandMother(gm){}
 
 	void About() override;
 	void analyzeCommand(string command)override;
