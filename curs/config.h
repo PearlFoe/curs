@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <vector>
+#include <string>
 
 class Reciever;
 class CharacterCommand;
@@ -18,25 +19,25 @@ class Bear;
 
 class Receiver{
 public:
-    virtual void analyzeCommand(string *command) = 0;
+    virtual void analyzeCommand(int command) = 0;
 };
 
 class CharacterCommand{
 private:
-    Reciever *reciever;
+    Receiver *receiver;
 public:
-    CharacterCommand(Reciever *reciever);
+    CharacterCommand(Receiver *receiver);
 
-    virtual void Execute(string *command) = 0;
+    void Execute(int command);
 
     ~CharacterCommand();
 };
 
 class Invoker{
 private:
-    vector<CharacterCommand> characters;
-private:
-    void tellStory(string *command);
+    std::vector<CharacterCommand*> characters;
+public:
+    void tellStory(int command);
     void addCharacter(CharacterCommand *character);
     void removeCharacter(CharacterCommand *character);
 };
@@ -47,25 +48,21 @@ public:
 };
 
 class GrandMother: public Character{
-private:
-    GrandFather *grandFather;
 public:
     GrandMother();
 
-	void About() override;
-	void analyzeCommand(string *command)override;
+	void About()override;
+	void analyzeCommand(int command)override;
 
 	~GrandMother();
 };
 
 class GrandFather: public Character{
-private:
-    GrandMother *grandMother;
 public:
     GrandFather();
 
 	void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
 	~GrandFather();
 };
@@ -75,7 +72,7 @@ public:
     Kolobok();
 
     void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
     ~Kolobok();
 };
@@ -85,7 +82,7 @@ public:
     Fox();
 
     void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
 	~Fox();
 };
@@ -95,7 +92,7 @@ public:
     Hare();
 
     void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
 	~Hare();
 };
@@ -105,7 +102,7 @@ public:
     Wolf();
 
     void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
 	~Wolf();
 };
@@ -115,7 +112,7 @@ public:
     Bear();
 
     void About() override;
-	void analyzeCommand(string *command)override;
+	void analyzeCommand(int command)override;
 
 	~Bear();
 };

@@ -1,9 +1,12 @@
 #include <iostream>
+#include <string>
+#include <fstream>
+#include <Windows.h>
 #include "config.h"
 
 using namespace std;
 
-void Invoker::tellStory(string command){
+void Invoker::tellStory(int command){
     for(int i = 0; i < characters.size(); i++){
         characters[i]->Execute(command);
     }
@@ -14,60 +17,74 @@ void Invoker::addCharacter(CharacterCommand *character){
 }
 
 void Invoker::removeCharacter(CharacterCommand *Character){
-    if(!myvector.empty()){
-        myvector.pop_back();
+    if(!characters.empty()){
+        characters.pop_back();
     }
 }
 
-GrandMother::GrandMother(GrandFather *grandFather){
-        this->grandFather = grandFather;
-}
+GrandMother::GrandMother(){}
 
-GrandMother::About(){
+void GrandMother::About(){
     cout<<"Я Бабушка"<<endl;
 }
 
-GrandMother::analyzeCommand(string *command){
-    switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+void GrandMother::analyzeCommand(int command){
+    switch(command){
+    case 0:
+        this->About();
+        break;
+    case 2:
+        cout<<"Бабка испекла Колобка"<<endl;
         break;
     }
 }
-GrandMother::~GrandMother(){
-    delete grandFather;
-}
 
-GrandFather::GrandFather(GrandMother *grandMother){
-    this->grandMother = grandMother;
-}
+GrandMother::~GrandMother(){}
 
-GrandFather::About(){
+GrandFather::GrandFather(){}
+
+void GrandFather::About(){
     cout<<"Я Дедушка"<<endl;
 }
 
-GrandFather::analyzeCommand(string *command){
+void GrandFather::analyzeCommand(int command){
     switch(int(command)){
+    case 0:
+        this->About();
+        break;
     case 1:
-        cout<<"---"<<endl;
+        cout<<"Дед собрал муку"<<endl;
         break;
     }
 }
 
-GrandFather::~GrandFather(){
-    delete grandMother;
-}
+GrandFather::~GrandFather(){}
 
 Kolobok::Kolobok(){}
 
-Kolobok::About(){
+void Kolobok::About(){
     cout<<"Я Колобок"<<endl;
 }
 
-Kolobok::analyzeCommand(string *command){
+void Kolobok::analyzeCommand(int command){
     switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+    case 0:
+        this->About();
+        break;
+    case 3:
+        cout<<"Колобок сбежал от Бабушки и Дедушки"<<endl;
+        break;
+    case 5:
+        cout<<"Колобок спел песню Зайцу и сбежал"<<endl;
+        break;
+    case 7:
+        cout<<"Колобок спел песню Волку и сбежал"<<endl;
+        break;
+    case 9:
+        cout<<"Колобок спел песню Медведю и сбежал"<<endl;
+        break;
+    case 11:
+        cout<<"Колобок сел на нос Лисе и поет песню"<<endl;
         break;
     }
 }
@@ -76,14 +93,20 @@ Kolobok::~Kolobok(){}
 
 Fox::Fox(){}
 
-Fox::About(){
+void Fox::About(){
     cout<<"Я Лиса"<<endl;
 }
 
-Fox::analyzeCommand(string *command){
+void Fox::analyzeCommand(int command){
     switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+    case 0:
+        this->About();
+        break;
+    case 10:
+        cout<<"Лиса грозится съесть Колобка"<<endl;
+        break;
+    case 12:
+        cout<<"Лиса съедает колобка"<<endl;
         break;
     }
 }
@@ -92,14 +115,17 @@ Fox::~Fox(){};
 
 Hare::Hare(){}
 
-Hare::About(){
+void Hare::About(){
     cout<<"Я Заяц"<<endl;
 }
 
-Hare::analyzeCommand(string *command){
+void Hare::analyzeCommand(int command){
     switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+    case 0:
+        this->About();
+        break;
+    case 4:
+        cout<<"Заяц грозится съесть Колобка"<<endl;
         break;
     }
 }
@@ -108,14 +134,17 @@ Hare::~Hare(){}
 
 Wolf::Wolf(){}
 
-Wolf::About(){
+void Wolf::About(){
     cout<<"Я Волк"<<endl;
 }
 
-Wolf::analyzeCommand(string *command){
+void Wolf::analyzeCommand(int command){
     switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+    case 0:
+        this->About();
+        break;
+    case 6:
+        cout<<"Волк грозится съесть Колобка"<<endl;
         break;
     }
 }
@@ -124,14 +153,17 @@ Wolf::~Wolf(){}
 
 Bear::Bear(){}
 
-Bear::About(){
+void Bear::About(){
     cout<<"Я Медведь"<<endl;
 }
 
-Bear::analyzeCommand(string *command){
+void Bear::analyzeCommand(int command){
     switch(int(command)){
-    case 1:
-        cout<<"---"<<endl;
+    case 0:
+        this->About();
+        break;
+    case 8:
+        cout<<"Медведь грозится съесть Колобка"<<endl;
         break;
     }
 }
@@ -151,7 +183,7 @@ Character* KolobokFactory::createCharacter(){
 }
 
 Character* HareFactory::createCharacter(){
-    return new Hare():
+    return new Hare();
 }
 
 Character* WolfFactory::createCharacter(){
@@ -166,10 +198,88 @@ Character* FoxFactory::createCharacter(){
     return new Fox();
 }
 
+CharacterCommand::CharacterCommand(Receiver *receiver){
+    this->receiver = receiver;
+}
+
+void CharacterCommand::Execute(int command){
+    this->receiver->analyzeCommand(command);//????????????????????????
+}
+
+CharacterCommand::~CharacterCommand(){
+    delete receiver;
+}
 
 
 int main()
 {
+	setlocale(LC_ALL, "Russian");
+
+    cout << "*********************************************" << endl;
+	cout << "* Курсовой проект по дисциплине *" << endl;
+	cout << "* Объектно-ориентированное программирование *" << endl;
+	cout << "* Тема: Сказка 'Колобок' *" << endl;
+	cout << "* выполнил студент группы ИТ-992 *" << endl;
+	cout << "* Воронкин Денис Сергеевич *" << endl;
+	cout << "*********************************************" << endl;
+
+    GrandFatherFactory* grandFatherFactory = new GrandFatherFactory();
+    GrandMotherFactory* grandMotherFactory = new GrandMotherFactory();
+    KolobokFactory* kolobokFactory = new KolobokFactory;
+    HareFactory* hareFactory = new HareFactory;
+    WolfFactory* wolfFactory = new WolfFactory;
+    BearFactory* bearFactory = new BearFactory;
+    FoxFactory* foxFactory = new FoxFactory;
+
+    GrandFather* grandFather = (GrandFather*) grandFatherFactory->createCharacter();
+    GrandMother* grandMother = (GrandMother*) grandMotherFactory->createCharacter();
+    Kolobok* kolobok = (Kolobok*) kolobokFactory->createCharacter();
+    Hare* hare = (Hare*) hareFactory->createCharacter();
+    Wolf* wolf = (Wolf*) wolfFactory->createCharacter();
+    Bear* bear = (Bear*) bearFactory->createCharacter();
+    Fox* fox = (Fox*) foxFactory->createCharacter();
+
+    Invoker* invoker = new Invoker();
+
+    invoker->addCharacter(new CharacterCommand(grandFather));
+    invoker->addCharacter(new CharacterCommand(grandMother));
+    invoker->addCharacter(new CharacterCommand(kolobok));
+    invoker->addCharacter(new CharacterCommand(hare));
+    invoker->addCharacter(new CharacterCommand(wolf));
+    invoker->addCharacter(new CharacterCommand(bear));
+    invoker->addCharacter(new CharacterCommand(fox));
+
+    fstream fs;
+	string command = "";
+	fs.open("commands.txt", fstream::in);
+
+	if(!fs.is_open()){
+		cout<<"Ошибка открытия файла"<<endl;
+	}
+	else{
+		while (!fs.eof()){
+			command = "";
+			fs>>command;
+			cout<<endl;
+			invoker->tellStory(stoi(command));
+		}
+	}
+
+	fs.close();
+	cout<<endl;
+	system("pause");
 
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
